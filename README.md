@@ -16,15 +16,19 @@ Telco data → Cleaning → Preprocessing (scaling + one-hot) → LogReg vs Rand
 - **Metrics:** precision, recall, F1 and ROC-AUC instead of accuracy, because accuracy is misleading on imbalanced data.
 - **Model selection** uses cross-validation F1, keeping the test set as an unbiased final check.
 - `TotalCharges` is blank for new customers (tenure 0), so it is converted to numeric and filled with 0.
-
 ## Results
-Run `python train.py` and paste the printed table here:
+Trained on 7,043 customers (26.5% churn), 80/20 stratified split, 5-fold cross-validation.
 
 | Model | CV F1 | Precision | Recall | F1 | ROC-AUC |
 |---|---|---|---|---|---|
-| Logistic Regression | | | | | |
-| Random Forest | | | | | |
-| XGBoost | | | | | |
+| Logistic Regression | 0.628 | 0.504 | **0.783** | 0.614 | **0.842** |
+| Random Forest | 0.629 | **0.547** | 0.714 | 0.619 | 0.839 |
+| **XGBoost (selected)** | **0.631** | 0.522 | 0.770 | **0.622** | 0.840 |
+
+**Top churn drivers:** month-to-month contract, fiber optic internet, no online security, no tech support, electronic check payment.
+
+**Insight:** all three models perform similarly, so the churn signal is fairly linear. Logistic Regression is almost as good
+and far more interpretable, which could make it the better choice when a business needs to explain predictions.
 
 ## Tech Stack
 Python · Pandas · Scikit-learn · XGBoost · FastAPI · Pydantic · Streamlit
